@@ -17,6 +17,21 @@ export type User = {
   _count: UserCount;
 };
 
+export type HealthLog = {
+  id: string;
+  userId: string;
+  date: Date;
+  steps: number;
+  waterLiters: number;
+};
+
+export type Rating = {
+  id: string;
+  userId: string;
+  weekStart: Date;
+  score: number;
+};
+
 export async function getUserDashboardData(userId: string) {
   const { start, end } = getMonthRange();
   const [user, logs, ratings] = await Promise.all([
@@ -36,12 +51,12 @@ export async function getUserDashboardData(userId: string) {
     }),
   ]);
 
-  const stepsSeries = logs.map((log) => ({
+  const stepsSeries = logs.map((log: HealthLog) => ({
     label: formatShortDate(log.date),
     value: log.steps,
   }));
 
-  const waterSeries = logs.map((log) => ({
+  const waterSeries = logs.map((log: HealthLog) => ({
     label: formatShortDate(log.date),
     value: Number(log.waterLiters.toFixed(1)),
   }));
@@ -50,7 +65,7 @@ export async function getUserDashboardData(userId: string) {
     const current = new Date();
     current.setDate(current.getDate() - (7 - index) * 7);
     const weekStart = getWeekStart(current);
-    const found = ratings.find((rating) => rating.weekStart.getTime() === weekStart.getTime());
+    const found = ratings.find((rating: Rating) => rating.weekStart.getTime() === weekStart.getTime());
     return {
       label: formatShortDate(weekStart),
       value: found?.score ?? 0,
@@ -58,7 +73,7 @@ export async function getUserDashboardData(userId: string) {
   });
 
   const totals = logs.reduce(
-    (acc, item) => {
+    (acc, item: HealthLog) => {
       acc.steps += item.steps;
       acc.water += item.waterLiters;
       return acc;
