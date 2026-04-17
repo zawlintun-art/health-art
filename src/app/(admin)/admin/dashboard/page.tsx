@@ -5,7 +5,7 @@ import { DashboardTableCard } from "@/components/dashboard-table-card";
 import { MetricCard } from "@/components/metric-card";
 import { SimpleBarChart } from "@/components/simple-bar-chart";
 import { requireAdmin } from "@/lib/auth";
-import { getAdminDashboardData } from "@/lib/data";
+import { getAdminDashboardData, type User } from "@/lib/data";
 
 export default async function AdminDashboardPage() {
   const admin = await requireAdmin();
@@ -55,7 +55,7 @@ export default async function AdminDashboardPage() {
             { key: "status", label: "Status" },
             { key: "activity", label: "Activity" },
           ]}
-          rows={data.recentUsers.map((user) => ({
+          rows={data.recentUsers.map((user: User) => ({
             name: `${user.firstName} ${user.lastName}`,
             role: user.role,
             status: user.onboarded ? "Onboarded" : "Pending",

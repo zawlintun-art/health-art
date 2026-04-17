@@ -6,7 +6,7 @@ import { Card } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { deleteUserAction, updateUserRoleAction } from "@/app/actions";
 import { requireAdmin } from "@/lib/auth";
-import { getAllUsers } from "@/lib/data";
+import { getAllUsers, type User } from "@/lib/data";
 
 export default async function AdminUsersPage() {
   await requireAdmin();
@@ -42,7 +42,7 @@ export default async function AdminUsersPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {users.map((user) => (
+              {users.map((user: User) => (
                 <TableRow key={user.id}>
                   <TableCell>
                     <div>

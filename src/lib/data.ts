@@ -1,6 +1,22 @@
 import { db } from "@/lib/db";
 import { formatShortDate, getMonthRange, getWeekStart } from "@/lib/health";
 
+export interface UserCount {
+  healthLogs?: number;
+  ratings?: number;
+}
+
+export type User = {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: "USER" | "ADMIN";
+  onboarded: boolean;
+  createdAt: Date;
+  _count: UserCount;
+};
+
 export async function getUserDashboardData(userId: string) {
   const { start, end } = getMonthRange();
   const [user, logs, ratings] = await Promise.all([
