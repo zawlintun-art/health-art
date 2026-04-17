@@ -87,7 +87,7 @@ export async function getUserDashboardData(userId: string) {
     waterSeries,
     weeklyRatings,
     recentLogs: [...logs]
-      .sort((a, b) => b.date.getTime() - a.date.getTime())
+      .sort((a: HealthLog, b: HealthLog) => b.date.getTime() - a.date.getTime())
       .slice(0, 5),
     latestRating: ratings.at(-1) ?? null,
     totals: {
@@ -135,7 +135,7 @@ export async function getAdminDashboardData() {
       });
 
       const value = ratings.length
-        ? Number((ratings.reduce((sum: number, item) => sum + item.score, 0) / ratings.length).toFixed(1))
+        ? Number((ratings.reduce((sum: number, item: Rating) => sum + item.score, 0) / ratings.length).toFixed(1))
         : 0;
 
       return {
