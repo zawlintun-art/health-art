@@ -1,7 +1,7 @@
-import { Role } from "@prisma/client";
-
 import { db } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
+
+type Role = "USER" | "ADMIN";
 
 export async function GET(_: Request, context: RouteContext<"/api/admin/users/[id]">) {
   const currentUser = await getCurrentUser();

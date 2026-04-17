@@ -1,10 +1,12 @@
-import { Role, type User } from "@prisma/client";
+import type { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
+
+type Role = "USER" | "ADMIN";
 
 const SESSION_COOKIE = "health_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7;

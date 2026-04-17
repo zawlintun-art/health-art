@@ -1,8 +1,9 @@
 "use server";
 
-import { Role } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+
+type Role = "USER" | "ADMIN";
 
 import {
   clearSession,
@@ -55,7 +56,7 @@ export async function registerAction(_: ActionState, formData: FormData): Promis
       surname: parsed.data.surname,
       dateOfBirth: parsed.data.dateOfBirth,
       passwordHash: await hashPassword(parsed.data.password),
-      role: shouldBeAdmin ? Role.ADMIN : Role.USER,
+      role: shouldBeAdmin ? "ADMIN" : "USER",
     },
   });
 
