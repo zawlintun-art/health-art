@@ -1,0 +1,63 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id                String      @id @default(cuid())
+  email             String      @unique
+  firstName         String
+  lastName          String
+  surname           String
+  dateOfBirth       DateTime
+  passwordHash      String
+  role              Role        @default(USER)
+  onboarded         Boolean     @default(false)
+  weightKg          Float?
+  heightCm          Float?
+  bmi               Float?
+  dailyWaterLiters  Float?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  healthLogs        HealthLog[]
+  ratings           Rating[]
+
+  @@index([role])
+  @@index([createdAt])
+}
+
+model HealthLog {
+  id          String   @id @default(cuid())
+  userId      String
+  date        DateTime
+  steps       Int      @default(0)
+  waterLiters Float    @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, date])
+  @@index([date])
+}
+
+model Rating {
+  id        String   @id @default(cuid())
+  userId    String
+  weekStart DateTime
+  score     Int
+  note      String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, weekStart])
+  @@index([weekStart])
+}
