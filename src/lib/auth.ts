@@ -1,4 +1,3 @@
-import type { User } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { SignJWT, jwtVerify } from "jose";
 import { cookies } from "next/headers";
@@ -7,6 +6,14 @@ import { redirect } from "next/navigation";
 import { db } from "@/lib/db";
 
 type Role = "USER" | "ADMIN";
+
+interface SessionUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: Role;
+}
 
 const SESSION_COOKIE = "health_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
@@ -31,7 +38,7 @@ export async function verifyPassword(value: string, hash: string) {
   return bcrypt.compare(value, hash);
 }
 
-export async function createSessionToken(user: Pick<User, "id" | "email" | "firstName" | "lastName" | "role">) {
+export async function createSessionToken(user: Pick<SessionUser, "id" | "email" | "firstName" | "lastName" | "role">) {
   return new SignJWT({
     role: user.role,
     email: user.email,
