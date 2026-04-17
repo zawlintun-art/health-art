@@ -135,7 +135,7 @@ export async function getAdminDashboardData() {
       });
 
       const value = ratings.length
-        ? Number((ratings.reduce((sum, item) => sum + item.score, 0) / ratings.length).toFixed(1))
+        ? Number((ratings.reduce((sum: number, item) => sum + item.score, 0) / ratings.length).toFixed(1))
         : 0;
 
       return {
