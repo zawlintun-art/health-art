@@ -73,7 +73,7 @@ export async function getUserDashboardData(userId: string) {
   });
 
   const totals = logs.reduce(
-    (acc, item: HealthLog) => {
+    (acc: { steps: number; water: number }, item: HealthLog) => {
       acc.steps += item.steps;
       acc.water += item.waterLiters;
       return acc;
